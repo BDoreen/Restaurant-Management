@@ -1,0 +1,8 @@
+Steak 31 25
+Arais 8 50
+Falafel 40 40
+Cake 40 10
+Pasta 22 30 
+Carpaccio 13 40 
+Fish 10 20 
+Muzli 30 55

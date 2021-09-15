@@ -1,0 +1,17 @@
+The kitchen was created.
+4 plates of Pasta were added to the kitchen. 
+3 plates of Falafel were added to table number 1. 
+4 plates of Pasta were added to table number 5. 
+3 plates of Arais were added to table number 5. 
+5 plates of Arais were added to table number 4. 
+There is not enough quantity to provide from Arais, sorry! Dish was not added to tables' (7) bill. 
+Dish Hamburger was ordered by table number 6 but doesn't exist in restaurant.
+Dish Mozli doesn't exist in restaurant, therefore, cannot add quantity from it.
+10 plates of Arais were added to the kitchen. 
+Quantity (-3) must be positive. Item Steak wasn't added.
+Steak was not ordered by table 2, so cannot remove it from bill.
+Table 2 hasn't ordered any course. Instruction to remove table cannot execute. 
+The bill for table number 5 is:
+3 Arais 150 nis, 
+Sum: 240 nis, please!
+Table 4 has left without paying his bill (250 NIS). 
