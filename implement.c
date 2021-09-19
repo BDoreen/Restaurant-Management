@@ -18,8 +18,8 @@ void InitialMenu(PMenu menu)
 void ReadManot(Menu* m, FILE* fDishes, FILE* out)
 {
 	Dish* toAdd = NULL;
-	char dish[51];
-	int isEOF, p, q;
+	char dish[51] = { '\0' };
+	int isEOF = 0, p = 0, q = 0;
 
 	isEOF = fscanf(fDishes, "%s%d%d", dish, &q, &p); //name, quantity, price.
 
@@ -60,7 +60,7 @@ void ReadManot(Menu* m, FILE* fDishes, FILE* out)
 PDish CDishInMenu(Menu m, char* name)
 {
 	Menu tMenu = m;
-	PDish dish;
+	PDish dish = NULL;
 
 	while (tMenu.head != NULL)
 	{
@@ -106,7 +106,7 @@ Dish* CreateDish(Menu* m, FILE* out, char* name, int q, int p)
 			return toAdd;						//returns address to allocated memory.
 		}
 	}
-	return NULL; 
+	return NULL;
 }
 
 
@@ -145,10 +145,10 @@ void InitialTbls(PTable tbls, int numTbls)
 
 /*Function scans a command from FILE Instruction.txt
   and executes its' matching case. */
-void FollowInst(PMenu m, PTable tbls, FILE* fpIn, FILE* out,  int numTbls)
+void FollowInst(PMenu m, PTable tbls, FILE* fpIn, FILE* out, int numTbls)
 {
-	int command, quantity, iTable, openTbls = 0;
-	char name[51], checkLine = '0';
+	int command = 0, quantity = 0, iTable = 0, openTbls = 0;
+	char name[51] = { '\0' }, checkLine = '0';
 
 	while (fscanf(fpIn, "%d", &command) != -1) //Loop through Instruction.txt
 	{
@@ -160,7 +160,7 @@ void FollowInst(PMenu m, PTable tbls, FILE* fpIn, FILE* out,  int numTbls)
 			break;
 		case 3: //Order a Dish.
 			fscanf(fpIn, "%d%s%d", &iTable, name, &quantity);
-			OrderItem( m, tbls, out, numTbls, iTable, quantity, name, &openTbls);
+			OrderItem(m, tbls, out, numTbls, iTable, quantity, name, &openTbls);
 			break;
 		case 4: //Cancel Dish/es
 			fscanf(fpIn, "%d%s%d, &iTable", &iTable, name, &quantity);
@@ -168,7 +168,7 @@ void FollowInst(PMenu m, PTable tbls, FILE* fpIn, FILE* out,  int numTbls)
 			break;
 		case 5: //Close Table.
 			fscanf(fpIn, "%d", &iTable);
-			RemoveTable(m, tbls, iTable,  out,  numTbls, &openTbls);
+			RemoveTable(m, tbls, iTable, out, numTbls, &openTbls);
 			break;
 
 		default:
@@ -180,11 +180,11 @@ void FollowInst(PMenu m, PTable tbls, FILE* fpIn, FILE* out,  int numTbls)
 }
 
 
-/*Function adds quantity to a Dish in Menu, 
+/*Function adds quantity to a Dish in Menu,
   only if the Dish exists in the Menu. */
 void AddItems(Menu* m, PTable tbls, char* ProductName, int q, FILE* out)
 {
-	PDish toAdd;
+	PDish toAdd = NULL;
 
 	toAdd = CDishInMenu(*m, ProductName); //Check for Dish in Menu
 
@@ -209,11 +209,11 @@ void AddItems(Menu* m, PTable tbls, char* ProductName, int q, FILE* out)
 /*Function adds an order to table i*/
 void OrderItem(Menu* m, PTable tbl, FILE* out, int iTbls, int i, int q, char* name, int* openTbls)
 {
-	POrders toAdd, is_Order;
-	PDish dish;
+	POrders toAdd = NULL, is_Order = NULL;
+	PDish dish = NULL;
 
 	/*Check that dish to be ordered exists in restaurants' Menu*/
-	dish = CDishInMenu(*m, name); 
+	dish = CDishInMenu(*m, name);
 	if (dish == NULL)//not exists
 	{
 		fprintf(out, "Dish %s was ordered by table number %d but doesn't exist in restaurant.\n", name, i);
@@ -273,7 +273,7 @@ int CTermsOfOrder(PMenu m, char* name, PDish toCheck, int qToCheck, int requeste
 {
 	if (qToCheck <= 0)
 	{
-		fprintf(out, "Quantity (%d) must be a positive number, order %s cannot be added to table %d.\n" ,qToCheck, name, requestedTbl);
+		fprintf(out, "Quantity (%d) must be a positive number, order %s cannot be added to table %d.\n", qToCheck, name, requestedTbl);
 		return 0;
 	}
 
@@ -296,7 +296,7 @@ int CTermsOfOrder(PMenu m, char* name, PDish toCheck, int qToCheck, int requeste
   returns address of the created memory.*/
 Orders* CreateOrder(Menu* m, PTable tbls, FILE* out, char* name, int i)
 {
-	Orders* PtoAdd;
+	Orders* PtoAdd = NULL;
 
 	PtoAdd = (POrders)malloc(sizeof(Orders));
 	if (PtoAdd == NULL)
@@ -335,7 +335,7 @@ void InitialOrder(POrders order)
    If it was the last order for Table i, Table[i-1]->head is nullified. */
 void RemoveItem(Menu* m, PTable tbl, int i, char* ProductName, int qToDel, FILE* out, int numTbls)
 {
-	POrders delOrder, temp = NULL;
+	POrders delOrder = NULL, temp = NULL;
 	PDish toCheck = NULL;
 
 	/*Check if table i exists in dining room*/
@@ -354,7 +354,7 @@ void RemoveItem(Menu* m, PTable tbl, int i, char* ProductName, int qToDel, FILE*
 	}
 
 	/*Find Dish in list of orders of Table[i-1]*/
-	delOrder = CDishInTable(&tbl[i-1], ProductName);
+	delOrder = CDishInTable(&tbl[i - 1], ProductName);
 	if (delOrder == NULL)
 	{
 		fprintf(out, "%s was not ordered by table %d, so cannot remove it from bill.\n", ProductName, i + 1);
@@ -367,14 +367,14 @@ void RemoveItem(Menu* m, PTable tbl, int i, char* ProductName, int qToDel, FILE*
 		return;
 	}
 
-	tbl[i-1].bill -= (delOrder->price * qToDel); //remove the order from the bill
+	tbl[i - 1].bill -= (delOrder->price * qToDel); //remove the order from the bill
 	delOrder->quantity -= qToDel;				//remove the quantity from the table.
 
 	/*Need to free memory only if delOrder->quantity == 0*/
 	if (qToDel == 0)
 	{
 		temp = FreeOrder(delOrder);
-		if(temp != NULL) //not end of list
+		if (temp != NULL) //not end of list
 			fprintf(out, "%d %s was returned to the kitchen from table number %d. \n", qToDel, ProductName, i);
 		else //end of Orders' list for Table[i]
 		{
@@ -388,9 +388,9 @@ void RemoveItem(Menu* m, PTable tbl, int i, char* ProductName, int qToDel, FILE*
 /* Function checks requirements for removing table.
    if all requirements are met, frees memory. also, prints most sold dishes if it recognizes last table being freed
    ALG: Release linked list from head to tail.*/
-void RemoveTable(PMenu menu, PTable table, int i,  FILE* out,  int numOfTables, int* openTbls)
+void RemoveTable(PMenu menu, PTable table, int i, FILE* out, int numOfTables, int* openTbls)
 {
-	POrders toDel;
+	POrders toDel = NULL;
 
 	if (i > numOfTables) //check if there are i tables in restaurant
 	{
@@ -398,19 +398,19 @@ void RemoveTable(PMenu menu, PTable table, int i,  FILE* out,  int numOfTables, 
 		return;
 	}
 
-	if (table[i-1].head == NULL) //check if there are any orders for the table
+	if (table[i - 1].head == NULL) //check if there are any orders for the table
 	{
 		fprintf(out, "Table %d hasn't ordered any course. Instruction to remove table cannot execute. \n", i + 1);
 		return;
 	}
 	//else
 	fprintf(out, "The bill for table number %d is:\n", i);
-	while (table[i-1].head != NULL) //while there any orders
+	while (table[i - 1].head != NULL) //while there any orders
 	{
-		toDel = table[i-1].head;
-		fprintf(out, "%d %s %d nis, \n", toDel->quantity, toDel->OrderName, toDel->price*toDel->quantity);
+		toDel = table[i - 1].head;
+		fprintf(out, "%d %s %d nis, \n", toDel->quantity, toDel->OrderName, toDel->price * toDel->quantity);
 		toDel->quantity = 0;
-		table[i-1].head = FreeOrder(toDel);
+		table[i - 1].head = FreeOrder(toDel);
 	}
 
 	fprintf(out, "Sum: %d nis, please!\n", table[i - 1].bill);
@@ -429,7 +429,7 @@ void RemoveTable(PMenu menu, PTable table, int i,  FILE* out,  int numOfTables, 
 }
 
 
-/* Functions scans through array of struct Tables, to find open Orders of unpaid bills. 
+/* Functions scans through array of struct Tables, to find open Orders of unpaid bills.
    Is used for closing restaurant.*/
 void FreeOrders(PTable table, int numTbls, FILE* out)
 {
