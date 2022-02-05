@@ -1,5 +1,5 @@
 # Restaurant-Management
-Implementation of Computerized Restaurant Management System - in linked lists.  
+First year project, Implementation of Computerized Restaurant Management System - in linked lists.  
 
 # Details about instructions.txt
 Input is originated from instructions.txt.  
